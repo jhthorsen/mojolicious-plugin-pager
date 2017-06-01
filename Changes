@@ -1,4 +1,4 @@
 Revision history for perl distribution Mojolicious-Plugin-Pager
 
-0.01 Not Released
- - Started project
+0.01 2017-06-01T22:18:07+0200
+ - Add pager_link() and pages_for() helpers
