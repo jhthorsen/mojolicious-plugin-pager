@@ -9,17 +9,17 @@ use constant WINDOW_SIZE => 'pager.window_size';
 our $VERSION = '0.01';
 
 sub pager_link {
-  my ($c, $page, @args) = @_;
+  my ($self, $c, $page, @args) = @_;
   my $url = $c->url_with;
   my @text = ref @args eq 'CODE' ? () : ($page->{n});
   my (@extra, @classes);
 
-  push @classes, 'active' if $page->{current};
-  push @classes, 'first'  if $page->{first};
-  push @classes, 'last'   if $page->{last};
-  push @classes, 'next'   if $page->{next};
-  push @classes, 'prev'   if $page->{prev};
-  push @classes, 'page' unless @classes;
+  push @classes, $self->{classes}{current} if $page->{current};
+  push @classes, $self->{classes}{first}   if $page->{first};
+  push @classes, $self->{classes}{last}    if $page->{last};
+  push @classes, $self->{classes}{next}    if $page->{next};
+  push @classes, $self->{classes}{prev}    if $page->{prev};
+  push @classes, $self->{classes}{normal} unless @classes;
   push @extra, rel => 'next' if $page->{next};
   push @extra, rel => 'prev' if $page->{prev};
 
@@ -69,8 +69,15 @@ sub register {
   $app->defaults(PAGE_PARAM,  $config->{param_name}  || 'page');
   $app->defaults(WINDOW_SIZE, $config->{window_size} || 3);
 
-  $app->helper(pager_link => \&pager_link);
-  $app->helper(pages_for  => \&pages_for);
+  $self->{classes}{current} = $config->{classes}{current} || 'active';
+  $self->{classes}{first}   = $config->{classes}{first}   || 'first';
+  $self->{classes}{last}    = $config->{classes}{last}    || 'last';
+  $self->{classes}{next}    = $config->{classes}{next}    || 'next';
+  $self->{classes}{prev}    = $config->{classes}{prev}    || 'prev';
+  $self->{classes}{normal}  = $config->{classes}{normal}  || 'page';
+
+  $app->helper(pager_link => sub { $self->pager_link(@_) });
+  $app->helper(pages_for => \&pages_for);
 }
 
 1;
@@ -169,6 +176,21 @@ Example C<%page>:
 Used to register this plugin and the L</HELPERS> above. C<%config> can be:
 
 =over 4
+
+=item * classes
+
+Used to set default class names, used by L</pager_link>.
+
+Default:
+
+  {
+    current => "active",
+    first   => "first",
+    last    => "last",
+    next    => "next",
+    prev    => "prev",
+    normal  => "page",
+  }
 
 =item * param_name
 
