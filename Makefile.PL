@@ -14,7 +14,7 @@ WriteMakefile(
       repository => 'https://github.com/jhthorsen/mojolicious-plugin-pager.git',
     },
   },
-  BUILD_REQUIRES => {'Test::More' => '0.88'},
-  PREREQ_PM      => {'perl'       => 'v5.10.0'},
-  test           => {TESTS        => (-e 'META.yml' ? 't/*.t' : 't/*.t xt/*.t')},
+  BUILD_REQUIRES => {'Test::More'  => '1.30'},
+  PREREQ_PM      => {'Mojolicious' => '7.20'},
+  test           => {TESTS         => (-e 'META.yml' ? 't/*.t' : 't/*.t xt/*.t')},
 );
