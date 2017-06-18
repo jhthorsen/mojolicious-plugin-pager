@@ -11,7 +11,7 @@ our $VERSION = '0.02';
 sub pager_link {
   my ($self, $c, $page, @args) = @_;
   my $url = $c->url_with;
-  my @text = ref @args eq 'CODE' ? () : ($page->{n});
+  my @text = (@args and ref $args[-1] eq 'CODE') ? () : ($page->{n});
   my (@extra, @classes);
 
   push @classes, $self->{classes}{current} if $page->{current};
