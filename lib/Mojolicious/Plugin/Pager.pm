@@ -6,7 +6,7 @@ use POSIX ();
 use constant PAGE_PARAM  => 'page_param_name';
 use constant WINDOW_SIZE => 'pager.window_size';
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 sub pager_link {
   my ($self, $c, $page, @args) = @_;
