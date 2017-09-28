@@ -22,6 +22,10 @@ get
   '/small' => {total_entries => 139, entries_per_page => 20, page_param_name => 'y'},
   'default';
 
+get
+  '/paged' => {total_entries => 1, entries_per_page => 20},
+  'default';
+
 my $t = Test::Mojo->new;
 
 $t->get_ok('/')->status_is(200)->element_exists_not('a.last')->element_exists_not('a.prev')
@@ -73,6 +77,8 @@ $t->get_ok('/small?y=2')->status_is(200)->element_exists_not('a.prev')
   ->element_exists_not('a.next')->element_count_is('a', 7)
   ->element_exists('a[href="/small?y=1"].first')->element_exists('a[href="/small?y=2"].active')
   ->element_exists('a[href="/small?y=7"].last');
+
+$t->get_ok('/paged?page=2')->status_is(200)->element_count_is('a', 1)->text_is('a', '1');
 
 done_testing;
 
