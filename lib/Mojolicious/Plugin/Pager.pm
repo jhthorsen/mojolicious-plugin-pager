@@ -3,7 +3,8 @@ use Mojo::Base 'Mojolicious::Plugin';
 
 use POSIX ();
 
-use constant PAGE_PARAM => 'page_param_name';
+use constant PAGE_PARAM         => 'page_param_name';
+use constant SHOW_PREV_AND_NEXT => 'pager.show_prev_next';
 
 our $VERSION = '0.03';
 
@@ -58,7 +59,8 @@ sub pages_for {
   }
 
   return $c->stash('pages_as_array_ref') ? \@pages : @pages unless @pages;
-  return $c->stash('pages_as_array_ref') ? \@pages : @pages unless $total_pages > $pager_size;
+  return $c->stash('pages_as_array_ref') ? \@pages : @pages
+    if $total_pages <= $pager_size and !$c->stash(SHOW_PREV_AND_NEXT);
 
   unshift @pages, {prev => 1, n => $current_page - 1} if $current_page > 1;
   push @pages,    {next => 1, n => $current_page + 1} if $current_page < $total_pages;
@@ -69,7 +71,8 @@ sub pages_for {
 sub register {
   my ($self, $app, $config) = @_;
 
-  $app->defaults(PAGE_PARAM, $config->{param_name} || 'page');
+  $app->defaults(PAGE_PARAM,         $config->{param_name}            || 'page');
+  $app->defaults(SHOW_PREV_AND_NEXT, $config->{always_show_prev_next} || 0);
 
   $self->{classes}{current} = $config->{classes}{current} || 'active';
   $self->{classes}{first}   = $config->{classes}{first}   || 'first';
