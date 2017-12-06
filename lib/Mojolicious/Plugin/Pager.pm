@@ -3,8 +3,7 @@ use Mojo::Base 'Mojolicious::Plugin';
 
 use POSIX ();
 
-use constant PAGE_PARAM  => 'page_param_name';
-use constant WINDOW_SIZE => 'pager.window_size';
+use constant PAGE_PARAM => 'page_param_name';
 
 our $VERSION = '0.03';
 
@@ -70,8 +69,7 @@ sub pages_for {
 sub register {
   my ($self, $app, $config) = @_;
 
-  $app->defaults(PAGE_PARAM,  $config->{param_name}  || 'page');
-  $app->defaults(WINDOW_SIZE, $config->{window_size} || 3);
+  $app->defaults(PAGE_PARAM, $config->{param_name} || 'page');
 
   $self->{classes}{current} = $config->{classes}{current} || 'active';
   $self->{classes}{first}   = $config->{classes}{first}   || 'first';
@@ -231,12 +229,6 @@ Can also be set in L<Mojolicious::Controller/stash> on each request under the
 name "page_param_name".
 
 Default: "page"
-
-=item * window_size
-
-Used to decide how many pages to show after/before the current page.
-
-Default: 3
 
 =back
 
