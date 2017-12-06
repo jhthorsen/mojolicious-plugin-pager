@@ -27,7 +27,7 @@ get
   'default';
 
 get
-  '/stash' => {total_items => 57, items_per_page => 20},
+  '/stash' => {pages_as_array_ref => 1, total_items => 57, items_per_page => 20},
   'stash';
 
 my $t = Test::Mojo->new;
@@ -105,7 +105,7 @@ __DATA__
 </ul>
 @@ stash.html.ep
 <ul class="pager">
-  % for my $page (pages_for) {
+  % for my $page (@{pages_for()}) {
     % my $url = url_with; $url->query->param(x => $page->{n});
     <li><%= link_to "hey!", $url %></li>
   % }

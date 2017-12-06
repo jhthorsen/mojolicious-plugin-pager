@@ -57,13 +57,13 @@ sub pages_for {
     $pages[-1]{current} = 1 if $n == $current_page;
   }
 
-  return @pages unless @pages;
-  return @pages unless $total_pages > $pager_size;
+  return $c->stash('pages_as_array_ref') ? \@pages : @pages unless @pages;
+  return $c->stash('pages_as_array_ref') ? \@pages : @pages unless $total_pages > $pager_size;
 
   unshift @pages, {prev => 1, n => $current_page - 1} if $current_page > 1;
   push @pages,    {next => 1, n => $current_page + 1} if $current_page < $total_pages;
 
-  return @pages;
+  return $c->stash('pages_as_array_ref') ? \@pages : @pages;
 }
 
 sub register {
