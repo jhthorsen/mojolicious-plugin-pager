@@ -50,6 +50,7 @@ sub pages_for {
     $start_page = 1 + $current_page - $window_size;
   }
 
+  $start_page = 1 if $start_page < 1;
   for my $n ($start_page .. $total_pages) {
     last if @pages >= $pager_size;
     push @pages, {n => $n};
