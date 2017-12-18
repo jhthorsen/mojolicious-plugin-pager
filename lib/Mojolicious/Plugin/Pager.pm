@@ -6,7 +6,7 @@ use POSIX ();
 use constant PAGE_PARAM         => 'page_param_name';
 use constant SHOW_PREV_AND_NEXT => 'pager.show_prev_next';
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub pager_link {
   my ($self, $c, $page, @args) = @_;
