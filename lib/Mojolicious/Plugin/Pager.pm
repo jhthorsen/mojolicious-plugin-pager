@@ -6,11 +6,11 @@ use POSIX ();
 use constant PAGE_PARAM         => 'page_param_name';
 use constant SHOW_PREV_AND_NEXT => 'pager.show_prev_next';
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 sub pager_link {
   my ($self, $c, $page, @args) = @_;
-  my $url = $c->url_with;
+  my $url  = $c->url_with;
   my @text = (@args and ref $args[-1] eq 'CODE') ? () : ($page->{n});
   my (@extra, @classes);
 
@@ -20,8 +20,8 @@ sub pager_link {
   push @classes, $self->{classes}{next}    if $page->{next};
   push @classes, $self->{classes}{prev}    if $page->{prev};
   push @classes, $self->{classes}{normal} unless @classes;
-  push @extra, rel => 'next' if $page->{next};
-  push @extra, rel => 'prev' if $page->{prev};
+  push @extra,   rel => 'next' if $page->{next};
+  push @extra,   rel => 'prev' if $page->{prev};
 
   $url->query->param($c->stash(PAGE_PARAM) => $page->{n} || 1);
   return $c->link_to(@text, $url, class => join(' ', @classes), @extra, @args);
@@ -31,7 +31,7 @@ sub pages_for {
   my $c            = shift;
   my $args         = ref $_[0] ? shift : {total_pages => @_ ? shift // 1 : undef};
   my $current_page = $args->{current} || $c->param($c->stash(PAGE_PARAM)) || 1;
-  my $pager_size   = $args->{size} || 8;
+  my $pager_size   = $args->{size}    || 8;
   my $window_size  = ($pager_size / 2) - 1;
   my ($start_page, $total_pages, @pages);
 
@@ -83,7 +83,7 @@ sub register {
   $self->{classes}{normal}  = $config->{classes}{normal}  || 'page';
 
   $app->helper(pager_link => sub { $self->pager_link(@_) });
-  $app->helper(pages_for => \&pages_for);
+  $app->helper(pages_for  => \&pages_for);
 }
 
 1;
@@ -129,8 +129,6 @@ Mojolicious::Plugin::Pager - Pagination plugin for Mojolicious
 L<Mojolicious::Plugin::Pager> is a L<Mojolicious> plugin for creating paged
 navigation, without getting in the way. There are other plugins which ship with
 complete markup, but this is often not the markup that I<you> want.
-
-Note that this plugin is currently EXPERIMENTAL.
 
 =head1 HELPERS
 
